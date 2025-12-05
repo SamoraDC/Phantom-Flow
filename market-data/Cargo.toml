@@ -1,0 +1,73 @@
+[package]
+name = "market-data"
+version = "0.1.0"
+edition = "2021"
+authors = ["SamoraDC"]
+description = "High-performance market data handler for QuantumFlow HFT"
+license = "MIT"
+repository = "https://github.com/SamoraDC/quantumflow-hft"
+
+[dependencies]
+# Async runtime
+tokio = { version = "1.35", features = ["full", "rt-multi-thread", "macros", "sync", "time", "net"] }
+
+# WebSocket
+tokio-tungstenite = { version = "0.21", features = ["native-tls"] }
+futures-util = "0.3"
+
+# HTTP client for REST API
+reqwest = { version = "0.11", features = ["json", "rustls-tls"], default-features = false }
+
+# Serialization
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Data structures
+rust_decimal = { version = "1.33", features = ["serde", "serde-with-str"] }
+ordered-float = { version = "4.2", features = ["serde"] }
+
+# Logging
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+
+# Error handling
+thiserror = "1.0"
+anyhow = "1.0"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+# Metrics
+prometheus = "0.13"
+
+# Configuration
+config = "0.13"
+dotenvy = "0.15"
+
+# IPC
+bytes = "1.5"
+rmp-serde = "1.1"  # MessagePack for efficient binary serialization
+
+# HTTP server for health checks
+axum = "0.7"
+tower-http = { version = "0.5", features = ["cors", "trace"] }
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+tokio-test = "0.4"
+mockall = "0.12"
+tempfile = "3.9"
+
+[[bench]]
+name = "orderbook_benchmark"
+harness = false
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[profile.bench]
+lto = true
+codegen-units = 1

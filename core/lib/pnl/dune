@@ -1,0 +1,5 @@
+(library
+ (name pnl)
+ (public_name quantumflow_core.pnl)
+ (libraries types unix)
+ (preprocess (pps ppx_deriving ppx_deriving_yojson)))

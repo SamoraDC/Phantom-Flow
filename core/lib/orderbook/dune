@@ -1,0 +1,5 @@
+(library
+ (name orderbook)
+ (public_name quantumflow_core.orderbook)
+ (libraries types)
+ (preprocess (pps ppx_deriving ppx_deriving_yojson)))

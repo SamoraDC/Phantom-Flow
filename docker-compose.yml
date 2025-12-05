@@ -1,0 +1,77 @@
+version: '3.8'
+
+services:
+  # Rust Market Data Handler
+  market-data:
+    build:
+      context: ./market-data
+      dockerfile: Dockerfile
+    environment:
+      - RUST_LOG=info
+      - SYMBOLS=BTCUSDT,ETHUSDT
+      - IPC_SOCKET_PATH=/tmp/quantumflow.sock
+    volumes:
+      - ipc-socket:/tmp
+      - ./data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # OCaml Core/Risk Engine
+  core:
+    build:
+      context: ./core
+      dockerfile: Dockerfile
+    environment:
+      - IPC_SOCKET_PATH=/tmp/quantumflow.sock
+      - RISK_MAX_POSITION=1.0
+      - RISK_MAX_DRAWDOWN=0.05
+    volumes:
+      - ipc-socket:/tmp
+    depends_on:
+      - market-data
+    restart: unless-stopped
+
+  # Python Strategy Engine
+  strategy:
+    build:
+      context: ./strategy
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=sqlite:///data/trades.db
+      - CORE_API_URL=http://core:8081
+      - TIMEZONE=America/Sao_Paulo
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID}
+    volumes:
+      - ./data:/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - core
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Report Generator (runs on schedule)
+  reporter:
+    build:
+      context: ./reports
+      dockerfile: Dockerfile
+    environment:
+      - DATABASE_URL=sqlite:///data/trades.db
+    volumes:
+      - ./data:/data
+      - ./reports/assets:/app/assets
+    profiles:
+      - reporting
+    command: python generate.py
+
+volumes:
+  ipc-socket:

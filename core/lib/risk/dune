@@ -1,0 +1,5 @@
+(library
+ (name risk)
+ (public_name quantumflow_core.risk)
+ (libraries types unix)
+ (preprocess (pps ppx_deriving ppx_deriving_yojson)))

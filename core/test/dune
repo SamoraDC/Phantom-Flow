@@ -1,0 +1,4 @@
+(test
+ (name test_risk)
+ (libraries types risk alcotest)
+ (preprocess (pps ppx_deriving ppx_deriving_yojson)))

@@ -1,0 +1,5 @@
+(executable
+ (name risk_gateway)
+ (public_name risk_gateway)
+ (libraries types risk pnl orderbook lwt lwt.unix cohttp-lwt-unix yojson)
+ (preprocess (pps lwt_ppx)))

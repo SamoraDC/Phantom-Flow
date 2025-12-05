@@ -1,0 +1,50 @@
+# Fly.io Configuration for QuantumFlow HFT Paper Trading
+# https://fly.io/docs/reference/configuration/
+
+app = "quantumflow-hft"
+primary_region = "gru"  # Sao Paulo, Brazil - closest to Binance servers
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  RUST_LOG = "info"
+  SYMBOLS = "BTCUSDT,ETHUSDT"
+  DATABASE_URL = "sqlite:///data/trades.db"
+  TIMEZONE = "America/Sao_Paulo"
+  IPC_SOCKET_PATH = "/tmp/quantumflow.sock"
+  RISK_MAX_POSITION = "1.0"
+  RISK_MAX_DRAWDOWN = "0.05"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[http_service.checks]]
+  grace_period = "30s"
+  interval = "15s"
+  method = "GET"
+  path = "/health"
+  timeout = "10s"
+
+[[vm]]
+  memory = "256mb"
+  cpu_kind = "shared"
+  cpus = 1
+
+[mounts]
+  source = "quantumflow_data"
+  destination = "/data"
+  initial_size = "1gb"
+
+# Metrics endpoint for monitoring
+[[services]]
+  internal_port = 9090
+  protocol = "tcp"
+
+  [[services.ports]]
+    port = 9090
