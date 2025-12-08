@@ -1,0 +1,43 @@
+
+## Live Performance
+
+*Last updated: {{ updated_at }}*
+
+### Key Metrics
+
+| Metric | Value |
+|--------|-------|
+| **Total Trades** | {{ metrics.total_trades }} |
+| **Win Rate** | {{ "%.1f"|format(metrics.win_rate) }}% |
+| **Total P&L** | ${{ "%.2f"|format(metrics.total_pnl) }} ({{ "%.2f"|format(metrics.total_pnl_pct) }}%) |
+| **Sharpe Ratio** | {{ "%.2f"|format(metrics.sharpe_ratio) }} |
+| **Max Drawdown** | {{ "%.2f"|format(metrics.max_drawdown_pct) }}% |
+| **Profit Factor** | {{ "%.2f"|format(metrics.profit_factor) }} |
+| **Avg Trade P&L** | ${{ "%.2f"|format(metrics.avg_trade_pnl) }} |
+| **Trading Days** | {{ metrics.trading_days }} |
+
+### Win/Loss Statistics
+
+| Metric | Value |
+|--------|-------|
+| Winning Trades | {{ metrics.winning_trades }} |
+| Losing Trades | {{ metrics.losing_trades }} |
+| Average Win | ${{ "%.2f"|format(metrics.avg_win) }} |
+| Average Loss | ${{ "%.2f"|format(metrics.avg_loss) }} |
+| Largest Win | ${{ "%.2f"|format(metrics.largest_win) }} |
+| Largest Loss | ${{ "%.2f"|format(metrics.largest_loss) }} |
+| Total Fees | ${{ "%.2f"|format(metrics.total_fees) }} |
+
+### Charts
+
+#### Equity Curve
+![Equity Curve](reports/assets/equity_curve.png)
+
+#### Drawdown
+![Drawdown](reports/assets/drawdown.png)
+
+#### Trade P&L Distribution
+![P&L Distribution](reports/assets/pnl_distribution.png)
+
+#### P&L by Time (Heatmap)
+![Hourly Heatmap](reports/assets/hourly_heatmap.png)

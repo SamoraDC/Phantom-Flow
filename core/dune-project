@@ -1,0 +1,27 @@
+(lang dune 3.0)
+(name quantumflow_core)
+(version 0.1.0)
+(generate_opam_files true)
+
+(source (github SamoraDC/quantumflow-hft))
+(license MIT)
+(authors "SamoraDC")
+(maintainers "SamoraDC")
+
+(package
+ (name quantumflow_core)
+ (synopsis "QuantumFlow HFT Core - Risk Engine and Order Book Types")
+ (description "Type-safe core components for the QuantumFlow HFT paper trading system")
+ (depends
+  (ocaml (>= 5.0))
+  dune
+  core
+  core_unix
+  yojson
+  ppx_deriving
+  ppx_deriving_yojson
+  ppx_sexp_conv
+  lwt
+  lwt_ppx
+  cohttp-lwt-unix
+  (alcotest :with-test)))
