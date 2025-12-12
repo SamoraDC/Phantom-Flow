@@ -31,10 +31,17 @@ RUN cargo build --release
 # ============================================================================
 FROM ocaml/opam:debian-12-ocaml-5.1 AS ocaml-builder
 
+# Install system dependencies as root first
+USER root
+RUN apt-get update && apt-get install -y \
+    pkg-config \
+    libgmp-dev \
+    && rm -rf /var/lib/apt/lists/*
+
 USER opam
 WORKDIR /home/opam/app
 
-# Install dependencies
+# Install OCaml dependencies
 RUN opam update && opam install -y \
     dune \
     core \
@@ -42,6 +49,7 @@ RUN opam update && opam install -y \
     yojson \
     ppx_deriving \
     ppx_deriving_yojson \
+    ppx_sexp_conv \
     lwt \
     lwt_ppx \
     cohttp-lwt-unix \
