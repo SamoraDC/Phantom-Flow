@@ -84,7 +84,7 @@ let check_position_size ~symbol ~current_position ~order_qty ~order_side config 
 
 (** Check total exposure *)
 let check_total_exposure ~(positions:position list) ~order_value config =
-  let total_exposure = List.fold_left (fun acc pos ->
+  let total_exposure = List.fold_left (fun acc (pos:position) ->
     Decimal.(acc + Decimal.abs pos.quantity)
   ) Decimal.zero positions in
   let new_exposure = Decimal.(total_exposure + order_value) in
