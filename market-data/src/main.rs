@@ -63,21 +63,20 @@ async fn main() -> anyhow::Result<()> {
     });
 
     // Start WebSocket manager
-    let ws_manager = WebSocketManager::new(state);
+    let mut ws_manager = WebSocketManager::new(state);
     ws_manager.run().await?;
 
     Ok(())
 }
 
 /// Start HTTP server for health checks and metrics
-async fn start_health_server(state: Arc<AppState>) -> anyhow::Result<()> {
+async fn start_health_server(_state: Arc<AppState>) -> anyhow::Result<()> {
     use axum::{routing::get, Json, Router};
     use std::net::SocketAddr;
 
     let app = Router::new()
         .route("/health", get(health_check))
-        .route("/metrics", get(metrics))
-        .with_state(state);
+        .route("/metrics", get(metrics));
 
     let addr = SocketAddr::from(([0, 0, 0, 0], 9090));
     info!(addr = %addr, "Starting health check server");
