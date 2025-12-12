@@ -4,13 +4,11 @@
 
 use std::sync::Arc;
 use std::time::Duration;
-use tokio::sync::RwLock;
 use tokio::time::{interval, sleep};
 use tracing::{error, info, warn};
 
 use super::WebSocketClient;
 use crate::error::{MarketDataError, Result};
-use crate::orderbook::OrderBookManager;
 use crate::parser::{OrderBookSnapshot, ParsedMessage};
 use crate::AppState;
 

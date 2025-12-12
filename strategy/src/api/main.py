@@ -300,7 +300,7 @@ async def set_circuit_breaker(request: CircuitBreakerRequest) -> dict[str, Any]:
             return response.json()
     except Exception as e:
         logger.error("circuit_breaker_error", error=str(e))
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=str(e)) from e
 
 
 # ===========================================================================

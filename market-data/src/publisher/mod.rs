@@ -3,7 +3,6 @@
 //! Publishes order book state to other system components.
 
 use std::path::Path;
-use std::sync::Arc;
 use tokio::io::AsyncWriteExt;
 use tokio::net::UnixStream;
 use tokio::sync::Mutex;

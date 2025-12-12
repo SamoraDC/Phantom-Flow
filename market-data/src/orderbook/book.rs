@@ -176,7 +176,7 @@ impl OrderBook {
             .take(levels)
             .enumerate()
             .map(|(i, (_, q))| {
-                let weight = decay.powd(Decimal::from(i as i64));
+                let weight = decay.powi(i as u64);
                 *q * weight
             })
             .sum();
@@ -187,7 +187,7 @@ impl OrderBook {
             .take(levels)
             .enumerate()
             .map(|(i, (_, q))| {
-                let weight = decay.powd(Decimal::from(i as i64));
+                let weight = decay.powi(i as u64);
                 *q * weight
             })
             .sum();

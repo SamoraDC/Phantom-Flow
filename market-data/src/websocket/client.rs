@@ -6,7 +6,7 @@ use futures_util::{SinkExt, StreamExt};
 use tokio::net::TcpStream;
 use tokio_tungstenite::{
     connect_async,
-    tungstenite::{protocol::Message, Error as WsError},
+    tungstenite::protocol::Message,
     MaybeTlsStream, WebSocketStream,
 };
 use tracing::{debug, error, info, warn};
