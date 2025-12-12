@@ -35,6 +35,13 @@ module Decimal = struct
     let b_normalized = Int64.to_float b.value /. Float.pow 10.0 (Float.of_int b.scale) in
     Float.compare a_normalized b_normalized
 
+  (* Define these BEFORE shadowing comparison operators *)
+  let abs t = { t with value = Int64.abs t.value }
+  let neg t = { t with value = Int64.neg t.value }
+  let is_zero t = Int64.equal t.value 0L
+  let is_positive t = Int64.compare t.value 0L > 0
+  let is_negative t = Int64.compare t.value 0L < 0
+
   let ( + ) a b =
     if a.scale = b.scale then
       { value = Int64.add a.value b.value; scale = a.scale }
@@ -58,12 +65,6 @@ module Decimal = struct
   let ( >= ) a b = compare a b >= 0
   let ( <= ) a b = compare a b <= 0
   let ( = ) a b = compare a b = 0
-
-  let abs t = { t with value = Int64.abs t.value }
-  let neg t = { t with value = Int64.neg t.value }
-  let is_zero t = Int64.equal t.value 0L
-  let is_positive t = (Int64.compare t.value 0L) > 0
-  let is_negative t = (Int64.compare t.value 0L) < 0
 end
 
 (** Symbol representing a trading pair *)
