@@ -25,12 +25,12 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Rust
-        uses: dtolnay/rust-action@stable
+        uses: dtolnay/rust-toolchain@stable
         with:
           components: clippy, rustfmt
 
       - name: Cache cargo
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cargo/bin/
@@ -38,7 +38,7 @@ jobs:
             ~/.cargo/registry/cache/
             ~/.cargo/git/db/
             market-data/target/
-          key: ${{ runner.os }}-cargo-${{ hashFiles('market-data/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('market-data/Cargo.toml') }}
           restore-keys: |
             ${{ runner.os }}-cargo-
 
@@ -59,7 +59,7 @@ jobs:
   # =========================================================================
   ocaml:
     name: OCaml Tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     defaults:
       run:
         working-directory: core
@@ -68,9 +68,10 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up OCaml
-        uses: ocaml/setup-ocaml@v2
+        uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: "5.1"
+          dune-cache: true
 
       - name: Install dependencies
         run: |
@@ -103,6 +104,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install --upgrade pip hatchling>=1.8.0
           pip install -e ".[dev]"
 
       - name: Lint with ruff
@@ -141,7 +143,7 @@ jobs:
         with:
           context: .
           push: false
-          tags: quantumflow-hft:latest
+          tags: orp-flow:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
