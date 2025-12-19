@@ -45,14 +45,14 @@ impl WebSocketManager {
         loop {
             // Reset reconnect attempts if we've been stable for a while
             if let Some(last_success) = self.last_successful_connection {
-                if last_success.elapsed() > Duration::from_secs(RECONNECT_COOLDOWN_SECS) {
-                    if self.reconnect_attempts > 0 {
-                        info!(
-                            previous_attempts = self.reconnect_attempts,
-                            "Resetting reconnect counter after cooldown period"
-                        );
-                        self.reconnect_attempts = 0;
-                    }
+                if last_success.elapsed() > Duration::from_secs(RECONNECT_COOLDOWN_SECS)
+                    && self.reconnect_attempts > 0
+                {
+                    info!(
+                        previous_attempts = self.reconnect_attempts,
+                        "Resetting reconnect counter after cooldown period"
+                    );
+                    self.reconnect_attempts = 0;
                 }
             }
 
